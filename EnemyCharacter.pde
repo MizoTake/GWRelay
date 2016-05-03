@@ -1,7 +1,7 @@
 class EnemyCharacter extends BaseCharacter{
   //------Constant--------
-  static final int MY_WIDTH = 60;
-  static final int MY_HEIGHT = 60;
+  //static final int MY_WIDTH = 60;
+  //static final int MY_HEIGHT = 60;
   static final float FLY_SPEED = 5;
   static final int MOVE_STATE = 0;
   static final int FLY_STATE = 1;
@@ -11,15 +11,15 @@ class EnemyCharacter extends BaseCharacter{
   
   //------Field--------
   private int _colorNumber;
-  private color _myColor;
+  //private color _myColor;
   private int _moveState;
   private int _moveFrame;
   private int _moveSpeed;
   
   
-  public EnemyCharacter(Game parent, float x, float y, int colorNumber){
+  public EnemyCharacter(Game parent, float x, float y, int colorNumber, PImage cImage){
     //変数の初期化
-    super(parent, x, y);
+    super(parent, x, y, cImage);
     _colorNumber = colorNumber;
     _myColor = assignColor(colorNumber);
     _moveState = MOVE_STATE;
@@ -49,11 +49,16 @@ class EnemyCharacter extends BaseCharacter{
       break;
     }
     this.draw();
+    super.draw();
   }
   
   public void draw(){
-    fill(_myColor);
-    rect(_position.x, _position.y, MY_WIDTH, MY_HEIGHT);
+    //fill(_myColor);
+    //rect(_position.x, _position.y, MY_WIDTH, MY_HEIGHT);
+  }
+  
+  public int getStatus(){
+    return _moveState;
   }
   
   //カラーナンバーのゲッター

@@ -7,20 +7,36 @@ class Game{
   static final int GAME_TIME_MAX = 30;
   static final int MOVE_CHARA_MAX = 3;
   static final int STOP_CHARA_MAX = 3;
+  static final int BIGMAC_SIZE = 15360;
   
   //-----Field-------
   private int _sceneState;
   private int _gameTime;
+  private float _bigmacSizeWidth;
+  private float _bigmacSizeHeight;
+  private float _bigmacSpeed;
   private float _gameFrameCounter;
   private PlayerCharacter[] _playerCharacter;
   private EnemyCharacter[] _enemyCharacter;
-  
- 
+  private Pig _pig;
+  PImage _potato;
+  PImage _ham;
+  PImage _pigImage;
+  PImage _bigmac;
+
   public Game(){
     rectMode(CENTER);
     textAlign(CENTER);
     initializeGameScene();
+    _potato = loadImage("potato.png");
+    _ham = loadImage("ham.png");
+    _pigImage = loadImage("pig.png");
+    _bigmac = loadImage("bigmac.png");
     _sceneState = TITLE_SCENE;
+    _aPlayer.loop();
+    _bigmacSizeWidth = BIGMAC_SIZE;
+    _bigmacSizeHeight = BIGMAC_SIZE;
+    _bigmacSpeed = 50;
   } 
   
   public void update(){
@@ -43,6 +59,14 @@ class Game{
   //タイトル画面の処理
   public void playTitleScene(){
     background(0, 155, 0);
+    image(_bigmac, width/2 - _bigmacSizeWidth/2, height/2 - _bigmacSizeHeight/2, _bigmacSizeWidth, _bigmacSizeHeight);
+    if(_bigmacSizeWidth <= 480 || _bigmacSizeHeight <= 480){
+      _bigmacSizeWidth = 480;
+      _bigmacSizeHeight = 480;
+    }else{
+      _bigmacSizeWidth -= _bigmacSpeed;
+      _bigmacSizeHeight -= _bigmacSpeed;
+    }
     fill(100, 255, 100);
     textSize(30);
     text("ColorShooter", width / 2, height / 2);
@@ -50,7 +74,9 @@ class Game{
     text("Press Enter", width / 2, height / 2 + 40);
     text("Go to Game", width / 2, height / 2 + 70);
     if(pressEnter()){
+      initializeGameScene();
       _sceneState = GAME_SCENE;
+      _aPlayer.close();
     }
   }
   
@@ -64,12 +90,12 @@ class Game{
     _playerCharacter = new PlayerCharacter[MOVE_CHARA_MAX];
     _enemyCharacter = new EnemyCharacter[STOP_CHARA_MAX];
     for(int i = 0; i < _playerCharacter.length; i++){
-      _playerCharacter[i] = new PlayerCharacter(this, 100 + i * 200, height - 100, i);
+      _playerCharacter[i] = new PlayerCharacter(this, 100 + i * 200, height - 100, i, _potato);
     }
     
     int colorNumber = 0;
     for(int i = 0; i < _enemyCharacter.length; i++){
-      _enemyCharacter[i] = new EnemyCharacter(this, 180 + i * 60, 100, colorNumber);
+      _enemyCharacter[i] = new EnemyCharacter(this, 180 + i * 60, 100, colorNumber, _ham);
       colorNumber++;
       if(colorNumber > 2)colorNumber = 0;
     }
@@ -80,6 +106,8 @@ class Game{
       _enemyCharacter[i]._position = _enemyCharacter[randomNumber]._position;
       _enemyCharacter[randomNumber]._position = memo;
     }
+    
+    _pig = new Pig(this, width/2, height/2, _pigImage);
   }
   
   public void playGameScene(){
@@ -98,12 +126,22 @@ class Game{
     }
     
     //キャラクターの更新処理
+    int cnt = 0;
     for(int i = 0; i < _enemyCharacter.length; i++){
       _enemyCharacter[i].update();
+      if(_enemyCharacter[i].getStatus() == 1){
+        cnt += 1;
+      }
     }
+    if(cnt >= _enemyCharacter.length){
+      _sceneState = CLEAR_SCENE;
+    }
+    
     for(int i = 0; i < _playerCharacter.length; i++){
       _playerCharacter[i].update();
     }
+    
+    _pig.update();
   }
   
   //ゲームオーバー画面の処理
@@ -117,6 +155,7 @@ class Game{
     text("Go to Title", width / 2, height / 2 + 70);
     if(pressEnter()){
       _sceneState = TITLE_SCENE;
+      _aPlayer.loop();
     }
   }
   
@@ -131,6 +170,7 @@ class Game{
     text("Go to Title", width / 2, height / 2 + 70);
     if(pressEnter()){
       _sceneState = TITLE_SCENE;
+      _aPlayer.loop();
     }
   }
 }
