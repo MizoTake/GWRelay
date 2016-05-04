@@ -22,6 +22,7 @@ class Game{
   Pig _pig;
   Drink _drink;
   Paper _paper;
+  Dona _dona;
   PImage _potato;
   PImage _ham;
   PImage _pigImage;
@@ -30,6 +31,7 @@ class Game{
   PImage _hand_default;
   PImage _hand_catch;
   PImage _drinkImage;
+  PImage _donaImage;
 
   public Game(){
     rectMode(CENTER);
@@ -43,6 +45,7 @@ class Game{
     _hand_catch = loadImage("g_hand.png");
     _drinkImage = loadImage("drink.png");
     _paperImage = loadImage("oldman.png");
+    _donaImage = loadImage("dona.png");
     _sceneState = TITLE_SCENE;
     _aPlayer.loop();
     _bigmacSizeWidth = BIGMAC_SIZE;
@@ -130,6 +133,7 @@ class Game{
     _pig = new Pig(this, width/2, height/2, _pigImage);
     _paper = new Paper(this, width/2, height/2 , _paperImage);
     _drink = new Drink(this, width * 1.1, height * 1.1, _drinkImage );
+    _dona = new Dona(this, width - 45, height - 45, _donaImage);
   }
   
   public void playGameScene(){
@@ -170,6 +174,7 @@ class Game{
 
     _hand.update();
     _pig.update();
+    _dona.update();
   }
   
   //ゲームオーバー画面の処理

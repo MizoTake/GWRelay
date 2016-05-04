@@ -78,4 +78,18 @@ class BaseCharacter{
     
     return result;
   }
+  
+  public void playSound(int num){
+    switch (num){
+      case 0:
+        _failure.rewind();
+        _failure.play();
+        break;
+      case 1:
+        _success.rewind();
+        _success.play();
+        break;
+        
+    } 
+  }
 }

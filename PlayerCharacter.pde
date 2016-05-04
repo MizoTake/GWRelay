@@ -32,6 +32,7 @@ class PlayerCharacter extends BaseCharacter {
   }
 
   public void update() {
+    Game theParent = (Game)_theParent;
     switch(_moveState) {
     case STOP_STATE:
       _myColor = _keepColor; 
@@ -50,8 +51,6 @@ class PlayerCharacter extends BaseCharacter {
           }
         }
       //}
-      
-
       //初期位置に移動
       _position.x = _memoryPositionX;
       _position.y = _memoryPositionY;
@@ -69,6 +68,8 @@ class PlayerCharacter extends BaseCharacter {
       //y座標を減算して、飛んでいるように見せる
       _position.y -= SHOT_SPEED;
       if (_position.y <= 0) {
+        playSound(0);
+        theParent._dona._alive = true;
         _moveState = STOP_STATE;
       }
 
@@ -78,6 +79,7 @@ class PlayerCharacter extends BaseCharacter {
           //色が同じだった場合、的ブロックが飛ぶ
           if (_theParent._enemyCharacter[i].getColorNumber() == _colorNumber) {
             _theParent._enemyCharacter[i].flyAway();
+            playSound(1);
             _moveState = STOP_STATE;
           }
         }

@@ -10,14 +10,18 @@ Minim _minim;
 AudioPlayer _aPlayer;
 AudioPlayer _sPlayer;
 AudioPlayer _oldman;
+AudioPlayer _failure;
+AudioPlayer _success;
 private boolean _pressEnter;
 
 void setup(){
   size(640, 480);
   _minim = new Minim(this);
   _aPlayer = _minim.loadFile("potato.mp3");
-  _sPlayer = _minim.loadFile("ringtone.wav");
+  _sPlayer = _minim.loadFile("ringtone.mp3");
   _oldman  = _minim.loadFile("oldman.mp3");
+  _failure = _minim.loadFile("failure.mp3");
+  _success = _minim.loadFile("success.mp3");
   _theGame = new Game();
   _pressEnter = false;
 }
