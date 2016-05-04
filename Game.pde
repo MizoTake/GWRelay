@@ -4,7 +4,7 @@ class Game{
   static final int GAME_SCENE = 1;
   static final int OVER_SCENE = 2;
   static final int CLEAR_SCENE = 3;
-  static final int GAME_TIME_MAX = 1;
+  static final int GAME_TIME_MAX = 60;
   static final int MOVE_CHARA_MAX = 3;
   static final int STOP_CHARA_MAX = 3;
   static final int BIGMAC_SIZE = 15360;
@@ -20,12 +20,14 @@ class Game{
   EnemyCharacter[] _enemyCharacter;
   HandCursor _hand;
   Pig _pig;
+  Drink _drink;
   PImage _potato;
   PImage _ham;
   PImage _pigImage;
   PImage _bigmac;
   PImage _hand_default;
   PImage _hand_catch;
+  PImage _drinkImage;
 
   public Game(){
     rectMode(CENTER);
@@ -37,6 +39,7 @@ class Game{
     _bigmac = loadImage("bigmac.png");
     _hand_default = loadImage("p_hand.png");
     _hand_catch = loadImage("g_hand.png");
+    _drinkImage = loadImage("drink.png");
     _sceneState = TITLE_SCENE;
     _aPlayer.loop();
     _bigmacSizeWidth = BIGMAC_SIZE;
@@ -84,6 +87,7 @@ class Game{
       initializeGameScene();
       _sceneState = GAME_SCENE;
       _aPlayer.close();
+      _sPlayer.play();
     }
   }
   
@@ -120,6 +124,8 @@ class Game{
     }
     
     _pig = new Pig(this, width/2, height/2, _pigImage);
+    
+    _drink = new Drink(this, width * 1.1, height * 1.1, _drinkImage );
   }
   
   public void playGameScene(){
@@ -136,6 +142,8 @@ class Game{
     if(_gameTime <= 0){
       _sceneState = OVER_SCENE;
     }
+   
+    _drink.update();
    
     //キャラクターの更新処理
     int cnt = 0;
@@ -156,10 +164,12 @@ class Game{
     _hand.update();
     
     _pig.update();
+    
   }
   
   //ゲームオーバー画面の処理
   public void playOverScene(){
+    _sPlayer.close();
     background(155, 0, 0);
     fill(255, 100, 100);
     textSize(30);
@@ -175,6 +185,7 @@ class Game{
   
   //ゲームクリアー画面の処理
   public void playClearScene(){
+    _sPlayer.close();
     background(0, 0, 155);
     fill(100, 100, 255);
     textSize(30);

@@ -8,12 +8,14 @@ import ddf.minim.effects.*;
 private Game _theGame;
 Minim _minim;
 AudioPlayer _aPlayer;
+AudioPlayer _sPlayer;
 private boolean _pressEnter;
 
 void setup(){
   size(640, 480);
   _minim = new Minim(this);
   _aPlayer = _minim.loadFile("potato.mp3");
+  _sPlayer = _minim.loadFile("ringtone.wav");
   _theGame = new Game();
   _pressEnter = false;
 }
