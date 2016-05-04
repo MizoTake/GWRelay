@@ -9,6 +9,7 @@ private Game _theGame;
 Minim _minim;
 AudioPlayer _aPlayer;
 AudioPlayer _sPlayer;
+AudioPlayer _oldman;
 private boolean _pressEnter;
 
 void setup(){
@@ -16,6 +17,7 @@ void setup(){
   _minim = new Minim(this);
   _aPlayer = _minim.loadFile("potato.mp3");
   _sPlayer = _minim.loadFile("ringtone.wav");
+  _oldman  = _minim.loadFile("oldman.mp3");
   _theGame = new Game();
   _pressEnter = false;
 }

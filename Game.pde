@@ -21,9 +21,11 @@ class Game{
   HandCursor _hand;
   Pig _pig;
   Drink _drink;
+  Paper _paper;
   PImage _potato;
   PImage _ham;
   PImage _pigImage;
+  PImage _paperImage;
   PImage _bigmac;
   PImage _hand_default;
   PImage _hand_catch;
@@ -40,6 +42,7 @@ class Game{
     _hand_default = loadImage("p_hand.png");
     _hand_catch = loadImage("g_hand.png");
     _drinkImage = loadImage("drink.png");
+    _paperImage = loadImage("oldman.png");
     _sceneState = TITLE_SCENE;
     _aPlayer.loop();
     _bigmacSizeWidth = BIGMAC_SIZE;
@@ -88,6 +91,7 @@ class Game{
       _sceneState = GAME_SCENE;
       _aPlayer.close();
       _sPlayer.play();
+      _oldman.loop();
     }
   }
   
@@ -124,7 +128,7 @@ class Game{
     }
     
     _pig = new Pig(this, width/2, height/2, _pigImage);
-    
+    _paper = new Paper(this, width/2, height/2 , _paperImage);
     _drink = new Drink(this, width * 1.1, height * 1.1, _drinkImage );
   }
   
@@ -161,15 +165,17 @@ class Game{
       _playerCharacter[i].update();
     }
     
+    
+    _paper.update();
+
     _hand.update();
-    
     _pig.update();
-    
   }
   
   //ゲームオーバー画面の処理
   public void playOverScene(){
     _sPlayer.close();
+    _oldman.close();
     background(155, 0, 0);
     fill(255, 100, 100);
     textSize(30);
@@ -186,6 +192,7 @@ class Game{
   //ゲームクリアー画面の処理
   public void playClearScene(){
     _sPlayer.close();
+    _oldman.close();
     background(0, 0, 155);
     fill(100, 100, 255);
     textSize(30);
