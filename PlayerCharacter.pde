@@ -25,6 +25,11 @@ class PlayerCharacter extends BaseCharacter {
     _memoryPositionY = _position.y;
     _keepColor = _myColor;
   }
+  
+  
+  public int getMoveState(){
+    return _moveState;
+  }
 
   public void update() {
     switch(_moveState) {
@@ -39,6 +44,7 @@ class PlayerCharacter extends BaseCharacter {
             if (mouseReleaseMoment()) {
               _moveState = MOVE_STATE;
               _myColor = _keepColor;
+              _theParent._hand.setState(1);
             }
             _myColor = color(100, 100, 100);
           }
@@ -56,6 +62,7 @@ class PlayerCharacter extends BaseCharacter {
       //マウスが押された瞬間動かない状態へ遷移
       if (mouseReleaseMoment()) {
         _moveState = SHOT_STATE;
+        _theParent._hand.setState(0);
       }
       break;
     case SHOT_STATE:

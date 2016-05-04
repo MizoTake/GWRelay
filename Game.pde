@@ -4,7 +4,7 @@ class Game{
   static final int GAME_SCENE = 1;
   static final int OVER_SCENE = 2;
   static final int CLEAR_SCENE = 3;
-  static final int GAME_TIME_MAX = 30;
+  static final int GAME_TIME_MAX = 1;
   static final int MOVE_CHARA_MAX = 3;
   static final int STOP_CHARA_MAX = 3;
   static final int BIGMAC_SIZE = 15360;
@@ -16,13 +16,16 @@ class Game{
   private float _bigmacSizeHeight;
   private float _bigmacSpeed;
   private float _gameFrameCounter;
-  private PlayerCharacter[] _playerCharacter;
-  private EnemyCharacter[] _enemyCharacter;
-  private Pig _pig;
+  PlayerCharacter[] _playerCharacter;
+  EnemyCharacter[] _enemyCharacter;
+  HandCursor _hand;
+  Pig _pig;
   PImage _potato;
   PImage _ham;
   PImage _pigImage;
   PImage _bigmac;
+  PImage _hand_default;
+  PImage _hand_catch;
 
   public Game(){
     rectMode(CENTER);
@@ -32,11 +35,15 @@ class Game{
     _ham = loadImage("ham.png");
     _pigImage = loadImage("pig.png");
     _bigmac = loadImage("bigmac.png");
+    _hand_default = loadImage("p_hand.png");
+    _hand_catch = loadImage("g_hand.png");
     _sceneState = TITLE_SCENE;
     _aPlayer.loop();
     _bigmacSizeWidth = BIGMAC_SIZE;
     _bigmacSizeHeight = BIGMAC_SIZE;
     _bigmacSpeed = 50;
+    
+    noCursor();
   } 
   
   public void update(){
@@ -89,6 +96,11 @@ class Game{
     //キャラクターの初期化
     _playerCharacter = new PlayerCharacter[MOVE_CHARA_MAX];
     _enemyCharacter = new EnemyCharacter[STOP_CHARA_MAX];
+    
+    _hand = new HandCursor(this, mouseX, mouseY, _hand_default);
+    _hand.setDefaultImage(_hand_default);
+    _hand.setClickImage(_hand_catch);
+    
     for(int i = 0; i < _playerCharacter.length; i++){
       _playerCharacter[i] = new PlayerCharacter(this, 100 + i * 200, height - 100, i, _potato);
     }
@@ -124,7 +136,7 @@ class Game{
     if(_gameTime <= 0){
       _sceneState = OVER_SCENE;
     }
-    
+   
     //キャラクターの更新処理
     int cnt = 0;
     for(int i = 0; i < _enemyCharacter.length; i++){
@@ -140,6 +152,8 @@ class Game{
     for(int i = 0; i < _playerCharacter.length; i++){
       _playerCharacter[i].update();
     }
+    
+    _hand.update();
     
     _pig.update();
   }
