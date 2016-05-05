@@ -49,7 +49,7 @@ class HandCursor extends BaseCharacter {
     }
     
     _currentState = _state;
-    println(""+ _state + ", " + _currentState);
+    //println(""+ _state + ", " + _currentState);
     
     super.draw();
   }
